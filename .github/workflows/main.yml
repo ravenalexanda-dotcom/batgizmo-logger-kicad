@@ -1,0 +1,31 @@
+name: Make Gerbers
+
+on:
+  workflow_dispatch:
+
+jobs:
+  make-gerbers:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/inti-cmnb/kicad9_auto:latest
+
+    steps:
+      - name: Get BatGizmo files
+        uses: actions/checkout@v4
+
+      - name: Make Gerber files
+        run: |
+          mkdir -p gerbers
+          kicad-cli pcb gerbers -o gerbers/ BatGizmo-logger.kicad_pcb
+          kicad-cli pcb drill -o gerbers/ BatGizmo-logger.kicad_pcb
+
+      - name: Pack the Gerbils
+        run: |
+          cd gerbers
+          zip -r ../BatGizmo-Gerbers.zip .
+
+      - name: Save Gerber ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: BatGizmo-Gerbers
+          path: BatGizmo-Gerbers.zip
