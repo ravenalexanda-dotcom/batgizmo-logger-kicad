@@ -16,8 +16,8 @@ jobs:
       - name: Make Gerber files
         run: |
           mkdir -p gerbers
-          kicad-cli pcb gerbers -o gerbers/ BatGizmo-logger.kicad_pcb
-          kicad-cli pcb drill -o gerbers/ BatGizmo-logger.kicad_pcb
+          kicad-cli pcb export gerbers -o gerbers/ BatGizmo-logger.kicad_pcb
+          kicad-cli pcb export drill -o gerbers/ BatGizmo-logger.kicad_pcb
 
       - name: Pack the Gerbils
         run: |
